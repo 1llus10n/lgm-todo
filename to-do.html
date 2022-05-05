@@ -1,0 +1,62 @@
+<html>
+
+<head>
+    <title>LetsGrowMore-ToDo</title>
+    <link rel="stylesheet" href="to-do.css">
+</head>
+
+<body>
+    <div class="todolistwrapper">
+        <div class="todoInp">
+            <input type="text" placeholder="Enter to do ... " class="todoInpval">
+            <button class="addBtn" onclick="addToDo()">+</button>
+        </div>
+        <div class="todolist">
+            <h1>To Do List</h1>
+            <span id="noData">Add some task...Carpe Diem</span>
+            <div class="list"></div>
+        </div>
+    </div>
+    <script>
+        var todoList = document.querySelector(".list");
+        var todos = [];
+        var inpTodo = document.querySelector(".todoInpVal");
+        window.onload = fetchToDo();
+
+        function addToDo() {
+            if (inpTodo.value.length > 0){
+                todos.push(...[inpTodo.value]);
+                inpTodo.value = "";
+                fetchToDo();
+            } else {
+                alert("Enter to do ...");
+            }
+        }
+
+        function fetchToDo(){
+            if (todos.length > 0) {
+                document.getElementById("noData").style.display = "none";
+                todoList.innerHTML = "";
+                let itemElement = todos.map((item, index)=>{
+                    return `<div class="item"> <div class="todoItem">${item}</div><button class="deleteBtn" onClick="deleteToDo(${index})">Delete</button> </div>`
+                });
+                todoList.innerHTML += itemElement.join(" ");
+            } else {
+                document.getElementById("noData").style.display = "block";
+            }
+            if (!inpTodo.value.length > 0 && !todos.length) {
+                document.getElementById("noData").style.display = "block";
+            }
+        }
+
+        function deleteToDo(data) {
+            todos.splice(data,1);
+            if (!todos.length) {
+                todoList.innerHTML = "";
+            }
+            fetchToDo();
+        }
+    </script>
+</body>
+
+</html>
